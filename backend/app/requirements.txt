@@ -1,0 +1,30 @@
+# === Core Backend ===
+fastapi
+uvicorn[standard]
+
+# === File Upload / Parsing ===
+python-multipart
+pypdf
+unstructured
+
+# === LangChain & OpenAI ===
+langchain
+langchain-core
+langchain-openai
+langchain-community
+langchain-text-splitters
+langserve
+openai
+pydantic
+
+# === Embeddings & Vector DB ===
+chromadb
+langchain-chroma
+tiktoken
+
+# === Utilities ===
+python-dotenv
+requests
+
+# === Optional: Logging / Monitoring ===
+langsmith
