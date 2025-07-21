@@ -1,0 +1,257 @@
+2025-07-17 16:53:02,864 - INFO - Embedding setup time - build_embeddings took 0.4469 seconds
+2025-07-17 16:53:07,109 - INFO - Query: What is LangChain?
+2025-07-17 16:53:07,109 - INFO - Answer: LangChain is a platform that was initially a simple way to learn basic concepts of LLM Applications and develop "amateur" applications. In its second version (LCEL), it appears to be transitioning towards a more professional application solution.
+2025-07-17 16:53:07,109 - INFO - Retrieved 3 source documents
+2025-07-17 16:53:07,109 - INFO - Token Usage - Prompt: 351, Completion: 47, Total: 398, Cost: $0.000246
+2025-07-17 21:04:01,094 - ERROR - QA failed for query: What is LangChain?
+Traceback (most recent call last):
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\connection.py", line 385, in connect_check_health
+    sock = self.retry.call_with_retry(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\retry.py", line 87, in call_with_retry
+    return do()
+           ^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\connection.py", line 386, in <lambda>
+    lambda: self._connect(), lambda error: self.disconnect(error)
+            ^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\connection.py", line 797, in _connect
+    raise err
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\connection.py", line 781, in _connect
+    sock.connect(socket_address)
+ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\backend\app\routes\qa.py", line 26, in qa_router
+    result = qa_chain.invoke({"query": query})
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\langchain\chains\base.py", line 136, in invoke
+    inputs = self.prep_inputs(input)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\langchain\chains\base.py", line 515, in prep_inputs
+    external_context = self.memory.load_memory_variables(inputs)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\langchain\memory\buffer.py", line 83, in load_memory_variables
+    return {self.memory_key: self.buffer}
+                             ^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\langchain\memory\buffer.py", line 37, in buffer
+    return self.buffer_as_messages if self.return_messages else self.buffer_as_str
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\langchain\memory\buffer.py", line 67, in buffer_as_messages
+    return self.chat_memory.messages
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\langchain_community\chat_message_histories\redis.py", line 100, in messages
+    _items = self.redis_client.lrange(self.key, 0, -1)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\commands\core.py", line 2718, in lrange
+    return self.execute_command("LRANGE", name, start, end, keys=[name])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\client.py", line 623, in execute_command
+    return self._execute_command(*args, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\client.py", line 629, in _execute_command
+    conn = self.connection or pool.get_connection()
+                              ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\utils.py", line 191, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\connection.py", line 1530, in get_connection
+    connection.connect()
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\connection.py", line 379, in connect
+    self.connect_check_health(check_health=True)
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\connection.py", line 391, in connect_check_health
+    raise ConnectionError(self._error_message(e))
+redis.exceptions.ConnectionError: Error 10061 connecting to localhost:6379. No connection could be made because the target machine actively refused it.
+2025-07-17 21:05:36,042 - ERROR - QA failed for query: What is LangChain?
+Traceback (most recent call last):
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\connection.py", line 385, in connect_check_health
+    sock = self.retry.call_with_retry(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\retry.py", line 87, in call_with_retry
+    return do()
+           ^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\connection.py", line 386, in <lambda>
+    lambda: self._connect(), lambda error: self.disconnect(error)
+            ^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\connection.py", line 797, in _connect
+    raise err
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\connection.py", line 781, in _connect
+    sock.connect(socket_address)
+ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\backend\app\routes\qa.py", line 26, in qa_router
+    result = qa_chain.invoke({"query": query})
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\langchain\chains\base.py", line 136, in invoke
+    inputs = self.prep_inputs(input)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\langchain\chains\base.py", line 515, in prep_inputs
+    external_context = self.memory.load_memory_variables(inputs)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\langchain\memory\buffer.py", line 83, in load_memory_variables
+    return {self.memory_key: self.buffer}
+                             ^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\langchain\memory\buffer.py", line 37, in buffer
+    return self.buffer_as_messages if self.return_messages else self.buffer_as_str
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\langchain\memory\buffer.py", line 67, in buffer_as_messages
+    return self.chat_memory.messages
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\langchain_community\chat_message_histories\redis.py", line 100, in messages
+    _items = self.redis_client.lrange(self.key, 0, -1)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\commands\core.py", line 2718, in lrange
+    return self.execute_command("LRANGE", name, start, end, keys=[name])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\client.py", line 623, in execute_command
+    return self._execute_command(*args, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\client.py", line 629, in _execute_command
+    conn = self.connection or pool.get_connection()
+                              ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\utils.py", line 191, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\connection.py", line 1530, in get_connection
+    connection.connect()
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\connection.py", line 379, in connect
+    self.connect_check_health(check_health=True)
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\connection.py", line 391, in connect_check_health
+    raise ConnectionError(self._error_message(e))
+redis.exceptions.ConnectionError: Error 10061 connecting to localhost:6379. No connection could be made because the target machine actively refused it.
+2025-07-17 21:08:12,758 - ERROR - QA failed for query: What is LangChain?
+Traceback (most recent call last):
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\connection.py", line 385, in connect_check_health
+    sock = self.retry.call_with_retry(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\retry.py", line 87, in call_with_retry
+    return do()
+           ^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\connection.py", line 386, in <lambda>
+    lambda: self._connect(), lambda error: self.disconnect(error)
+            ^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\connection.py", line 797, in _connect
+    raise err
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\connection.py", line 781, in _connect
+    sock.connect(socket_address)
+ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\backend\app\routes\qa.py", line 26, in qa_router
+    result = qa_chain.invoke({"query": query})
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\langchain\chains\base.py", line 136, in invoke
+    inputs = self.prep_inputs(input)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\langchain\chains\base.py", line 515, in prep_inputs
+    external_context = self.memory.load_memory_variables(inputs)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\langchain\memory\buffer.py", line 83, in load_memory_variables
+    return {self.memory_key: self.buffer}
+                             ^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\langchain\memory\buffer.py", line 37, in buffer
+    return self.buffer_as_messages if self.return_messages else self.buffer_as_str
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\langchain\memory\buffer.py", line 67, in buffer_as_messages
+    return self.chat_memory.messages
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\langchain_community\chat_message_histories\redis.py", line 100, in messages
+    _items = self.redis_client.lrange(self.key, 0, -1)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\commands\core.py", line 2718, in lrange
+    return self.execute_command("LRANGE", name, start, end, keys=[name])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\client.py", line 623, in execute_command
+    return self._execute_command(*args, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\client.py", line 629, in _execute_command
+    conn = self.connection or pool.get_connection()
+                              ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\utils.py", line 191, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\connection.py", line 1530, in get_connection
+    connection.connect()
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\connection.py", line 379, in connect
+    self.connect_check_health(check_health=True)
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\connection.py", line 391, in connect_check_health
+    raise ConnectionError(self._error_message(e))
+redis.exceptions.ConnectionError: Error 10061 connecting to localhost:6379. No connection could be made because the target machine actively refused it.
+2025-07-17 21:09:06,410 - ERROR - QA failed for query: What is LangChain?
+Traceback (most recent call last):
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\connection.py", line 385, in connect_check_health
+    sock = self.retry.call_with_retry(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\retry.py", line 87, in call_with_retry
+    return do()
+           ^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\connection.py", line 386, in <lambda>
+    lambda: self._connect(), lambda error: self.disconnect(error)
+            ^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\connection.py", line 797, in _connect
+    raise err
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\connection.py", line 781, in _connect
+    sock.connect(socket_address)
+ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\backend\app\routes\qa.py", line 26, in qa_router
+    result = qa_chain.invoke({"query": query})
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\langchain\chains\base.py", line 136, in invoke
+    inputs = self.prep_inputs(input)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\langchain\chains\base.py", line 515, in prep_inputs
+    external_context = self.memory.load_memory_variables(inputs)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\langchain\memory\buffer.py", line 83, in load_memory_variables
+    return {self.memory_key: self.buffer}
+                             ^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\langchain\memory\buffer.py", line 37, in buffer
+    return self.buffer_as_messages if self.return_messages else self.buffer_as_str
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\langchain\memory\buffer.py", line 67, in buffer_as_messages
+    return self.chat_memory.messages
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\langchain_community\chat_message_histories\redis.py", line 100, in messages
+    _items = self.redis_client.lrange(self.key, 0, -1)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\commands\core.py", line 2718, in lrange
+    return self.execute_command("LRANGE", name, start, end, keys=[name])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\client.py", line 623, in execute_command
+    return self._execute_command(*args, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\client.py", line 629, in _execute_command
+    conn = self.connection or pool.get_connection()
+                              ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\utils.py", line 191, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\connection.py", line 1530, in get_connection
+    connection.connect()
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\connection.py", line 379, in connect
+    self.connect_check_health(check_health=True)
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\redis\connection.py", line 391, in connect_check_health
+    raise ConnectionError(self._error_message(e))
+redis.exceptions.ConnectionError: Error 10061 connecting to localhost:6379. No connection could be made because the target machine actively refused it.
+2025-07-17 21:28:36,786 - ERROR - QA failed for query: What is LangChain?
+Traceback (most recent call last):
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\backend\app\routes\qa.py", line 26, in qa_router
+    result = qa_chain.invoke({"query": query})
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\langchain\chains\base.py", line 167, in invoke
+    raise e
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\langchain\chains\base.py", line 155, in invoke
+    self._validate_inputs(inputs)
+  File "C:\Users\shray\OneDrive\Documents\GenAi\self\document-qa-rag\.venv\Lib\site-packages\langchain\chains\base.py", line 287, in _validate_inputs
+    raise ValueError(f"Missing some input keys: {missing_keys}")
+ValueError: Missing some input keys: {'question'}

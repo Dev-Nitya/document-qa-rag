@@ -1,48 +1,112 @@
+import datetime
+import json
 from pydantic import BaseModel
 from fastapi import APIRouter, HTTPException
+from fastapi.responses import StreamingResponse
 from langchain.callbacks import get_openai_callback
+from langchain.prompts import PromptTemplate
 
 from backend.app.chains.document_qa_chain import get_qa_chain
 from backend.app.utils.logger import track_timing, logger
 
-router = APIRouter()
+QARouter = APIRouter()
 
 class QARequest(BaseModel):
     question: str
+    session_id: str
 
-@router.post("/ask")
+@QARouter.post("/ask")
 #@track_timing("QA Chain Execution Time")
-def qa_router(request: QARequest):
-    print("Received:", request)
+async def qa_router(request: QARequest):
     try:
         query = request.question
-        qa_chain = get_qa_chain()
+        session_id = request.session_id
+        if not query or not session_id:
+            raise HTTPException(status_code=400, detail="Question and session_id are required")
 
-        with get_openai_callback() as cb:
-            result = qa_chain.invoke({"query": query})
+        prompt = PromptTemplate.from_template("""
+            You are a helpful assistant who answers based only on the provided documents.
+            Use the chat history to provide context if necessary.
+            If the question cannot be answered based on the docs, say "I don't know".
 
-            logger.info(f"Query: {query}")
-            logger.info(f"Answer: {result['result']}")
+            Answer clearly and concisely.
 
-            sources = result.get("source_documents", [])
-            if not sources:
-                logger.warning(f"No documents found for query: {query}")
-            else:
-                logger.info(f"Retrieved {len(sources)} source documents")
+            Chat History:
+            {chat_history}
 
-            # Token & cost metrics
-            logger.info(f"Token Usage - Prompt: {cb.prompt_tokens}, Completion: {cb.completion_tokens}, Total: {cb.total_tokens}, Cost: ${cb.total_cost:.6f}")
+            Context:
+            {context}
 
-        return {
-            "answer": result["result"],
-            "sources": [
-                {
-                    "content": doc.page_content,
-                    "metadata": doc.metadata
+            Question:
+            {question}
+        """)
+
+        qa_chain = get_qa_chain(session_id, prompt)
+
+        async def generate_response():
+            try:
+                full_answer = ""
+                source_documents = []
+                
+                # Stream the response from the chain
+                async for chunk in qa_chain.astream(
+                    {"question": query},
+                    config={
+                        "metadata": {
+                            "session_id": session_id,
+                            "timestamp": datetime.datetime.now().isoformat(),
+                            "prompt_version": "v1",
+                        }
+                    }
+                ):
+                    if "answer" in chunk:
+                        chunk_text = chunk["answer"]
+                        full_answer += chunk_text
+                        # Send each chunk as Server-Sent Event format
+                        yield f"data: {chunk_text}\n\n"
+                    
+                    if "source_documents" in chunk:
+                        source_documents = chunk["source_documents"]
+
+                # Log the complete interaction
+                log_data = {
+                    "session_id": session_id,
+                    "question": query,
+                    "answer": full_answer,
+                    "source_documents": [doc.page_content for doc in source_documents] if source_documents else [],
+                    "timestamp": datetime.datetime.now().isoformat()
                 }
-                for doc in result["source_documents"]
-            ]
-        }
+                with open("qa_log.json", "a") as log_file:
+                    log_file.write(json.dumps(log_data) + "\n")
+
+                # Send sources at the end
+                # if source_documents:
+                #     sources_data = json.dumps({
+                #         "sources": [
+                #             {
+                #                 "content": doc.page_content,
+                #                 "metadata": doc.metadata
+                #             }
+                #             for doc in source_documents
+                #         ]
+                #     })
+                #     yield f"data: [SOURCES:{sources_data}]\n\n"
+                
+                yield f"data: [DONE]\n\n"
+                
+            except Exception as e:
+                print(f"QA failed for query: {e}")
+                yield f"data: [ERROR: {str(e)}]\n\n"
+
+        return StreamingResponse(
+            generate_response(),
+            media_type="text/plain",
+            headers={
+                "Cache-Control": "no-cache",
+                "Connection": "keep-alive",
+            }
+        )
+        
     except Exception as e:
-        logger.exception(f"QA failed for query: {request.question}")
-        raise HTTPException(status_code=500, detail="Internal server error")
+        print(f"QA failed for query: {e}")
+        raise HTTPException(status_code=500, detail=f"{e} - An error occurred while processing your request")
