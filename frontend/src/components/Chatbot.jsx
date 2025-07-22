@@ -64,16 +64,29 @@ const handleNewChat = async () => {
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
       let aiResponse = '';
+      let currentRunId = null;
 
       for await (const chunk of parseSSEStream(reader, decoder)) {
+        // Check if this is a run_id event
+        if (chunk.startsWith('[RUN_ID:') && chunk.endsWith(']')) {
+          currentRunId = chunk.slice(8, -1); // Extract run_id from [RUN_ID:xxxx]
+          console.log('Captured run_id:', currentRunId);
+          continue; // Don't add this to the message content
+        }
+        
         aiResponse += chunk;
         setMessages((draft) => {
           const current = draft[newId] || [];
           const last = current[current.length - 1];
           if (last?.role === 'assistant') {
             last.content = aiResponse;
+            last.run_id = currentRunId; // Store run_id in the message
           } else {
-            draft[newId].push({ role: 'assistant', content: aiResponse });
+            draft[newId].push({ 
+              role: 'assistant', 
+              content: aiResponse,
+              run_id: currentRunId 
+            });
           }
         });
       }
@@ -116,16 +129,29 @@ const handleNewChat = async () => {
   const reader = res.body.getReader();
   const decoder = new TextDecoder();
   let aiResponse = '';
+  let currentRunId = null;
 
   for await (const chunk of parseSSEStream(reader, decoder)) {
+    // Check if this is a run_id event
+    if (chunk.startsWith('[RUN_ID:') && chunk.endsWith(']')) {
+      currentRunId = chunk.slice(8, -1); // Extract run_id from [RUN_ID:xxxx]
+      console.log('Captured run_id:', currentRunId);
+      continue; // Don't add this to the message content
+    }
+    
     aiResponse += chunk;
     setMessages((draft) => {
       const current = draft[sessionId] || [];
       const last = current[current.length - 1];
       if (last?.role === 'assistant') {
         last.content = aiResponse;
+        last.run_id = currentRunId; // Store run_id in the message
       } else {
-        draft[sessionId].push({ role: 'assistant', content: aiResponse });
+        draft[sessionId].push({ 
+          role: 'assistant', 
+          content: aiResponse,
+          run_id: currentRunId 
+        });
       }
     });
   }
@@ -170,7 +196,10 @@ const handleNewChat = async () => {
       <div className="flex flex-col flex-1 min-w-0">
         <div className="flex-1 overflow-y-auto">
           <div className="max-w-4xl mx-auto p-4">
-            <ChatMessages messages={messages[currentSessionId] || []} />
+            <ChatMessages 
+              messages={messages[currentSessionId] || []} 
+              sessionId={currentSessionId} 
+            />
           </div>
         </div>
 

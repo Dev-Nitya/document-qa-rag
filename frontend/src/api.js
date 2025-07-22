@@ -13,24 +13,22 @@ async function uploadPDF(formData) {
   return res;
 }
 
-async function sendFeedback(index, isPositive) {
-  const msg = messages[index];
-  const prevMsg = messages[index - 1];
+async function submitFeedback(feedbackData) {
+  const res = await fetch(BASE_URL + '/feedback', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(feedbackData)
+  });
 
-  if (!msg || msg.role !== 'assistant' || msg.loading || msg.error || !prevMsg) return;
-
-  try {
-    await api.submitFeedback({
-      question: prevMsg.content,
-      session_id: chatId || 'anonymous',
-      answer: msg.content,
-      feedback: isPositive ? 'thumbs_up' : 'thumbs_down',
-    });
-    alert(`Feedback ${isPositive ? '👍' : '👎'} submitted`);
-  } catch (err) {
-    console.error('Feedback error:', err);
-    alert('Failed to send feedback');
+  console.log('Submitting feedback:', feedbackData);
+  console.log('Response status:', res.status);
+  
+  if (!res.ok) {
+    const errorData = await res.json();
+    return Promise.reject({ status: res.status, data: errorData });
   }
+  
+  return res;
 }
 
 
@@ -59,5 +57,5 @@ async function askQuestion(sessionId, question) {
 }
 
 export default {
-  createChat, askQuestion, uploadPDF, sendFeedback
+  createChat, askQuestion, uploadPDF, submitFeedback
 };
