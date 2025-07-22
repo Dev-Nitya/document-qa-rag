@@ -3,7 +3,6 @@
 A sophisticated **Retrieval-Augmented Generation (RAG)** system that enables intelligent question-answering over your documents. Upload PDFs, ask questions, and get accurate, context-aware responses powered by OpenAI's GPT models and ChromaDB vector storage.
 
 ![Project Banner](screenshots/interface.png)
-_Add a screenshot of your main application interface here_
 
 ## ✨ Features
 
