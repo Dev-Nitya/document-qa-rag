@@ -111,28 +111,6 @@ npm run dev
 - **Backend API**: http://localhost:8000
 - **API Documentation**: http://localhost:8000/docs
 
-## 📸 Screenshots
-
-### Main Chat Interface
-
-![Main Interface](screenshots/main-interface.png)
-_Add a screenshot of your main chat interface_
-
-### Document Upload
-
-![Document Upload](screenshots/upload.png)
-_Add a screenshot of the PDF upload functionality_
-
-### Feedback System
-
-![Feedback System](screenshots/feedback.png)
-_Add a screenshot showing the thumbs up/down feedback buttons_
-
-### Multi-Session Management
-
-![Session Management](screenshots/sessions.png)
-_Add a screenshot of the sidebar with multiple chat sessions_
-
 ## 🛠️ Technology Stack
 
 ### Frontend
@@ -301,14 +279,6 @@ rm -rf chroma_db/
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙋‍♂️ Support
-
-If you have any questions or need help:
-
-- 📧 Email: your.email@example.com
-- 💬 Issues: [GitHub Issues](https://github.com/Dev-Nitya/document-qa-rag/issues)
-- 📖 Documentation: [API Docs](http://localhost:8000/docs)
 
 ## 🎉 Acknowledgments
 
